@@ -4,21 +4,23 @@ export const generateFlashcards = async (text) => {
   try {
     console.log('Sending request to backend...');
 
-    // First validate the API key on the server (helpful for clearer errors)
+    // Validate API key first
     try {
       const keyCheck = await axios.get('http://localhost:3001/api/validate-key', { timeout: 5000 });
       if (keyCheck.data && keyCheck.data.valid === false) {
-        throw new Error(keyCheck.data.message || 'Invalid API key or API not enabled');
+        throw new Error(keyCheck.data.message || 'Invalid API key or API not enabled. Please check your Gemini API key.');
       }
     } catch (err) {
-      // If validation failed due to network or server error, preserve original behavior but log a hint
-      console.warn('API key validation failed or timed out:', err.message);
+      if (err.code === 'ECONNABORTED' || err.code === 'ERR_NETWORK') {
+        throw new Error('Cannot connect to server. Please ensure:\n1. Backend server is running (npm run server)\n2. Server is accessible on port 3001');
+      }
+      console.warn('API key validation check:', err.message);
     }
 
     const response = await axios.post('http://localhost:3001/api/generate-flashcards', {
-      text
+      text: text.trim()
     }, {
-      timeout: 60000, // 60 second timeout
+      timeout: 90000, // 90 second timeout for longer texts
       headers: {
         'Content-Type': 'application/json'
       }
@@ -30,15 +32,20 @@ export const generateFlashcards = async (text) => {
       throw new Error('Invalid response format from server');
     }
     
+    if (response.data.flashcards.length === 0) {
+      throw new Error('No flashcards were generated. Please try with different or more detailed content.');
+    }
+    
     return response.data.flashcards;
   } catch (error) {
     console.error('Full error:', error);
     console.error('Error response:', error.response?.data);
     
     if (error.response) {
-      // Server responded with error (include status and body for clarity)
+      // Server responded with error
       const status = error.response.status;
       let serverError = '';
+      
       if (typeof error.response.data === 'string') {
         serverError = error.response.data;
       } else if (error.response.data && typeof error.response.data === 'object') {
@@ -46,15 +53,29 @@ export const generateFlashcards = async (text) => {
       } else {
         serverError = error.response.statusText;
       }
-      throw new Error(`Server error (${status}): ${serverError}`);
+      
+      // Provide helpful error messages
+      if (status === 500) {
+        throw new Error(`Server error: ${serverError}\n\nTips:\n• Check if your API key is valid\n• Ensure Gemini API is enabled in your Google Cloud Console\n• Try with shorter text if the content is very long`);
+      } else if (status === 400) {
+        throw new Error(`Invalid request: ${serverError}`);
+      } else if (status === 401 || status === 403) {
+        throw new Error(`Authentication error: ${serverError}\n\nPlease check your Gemini API key in the .env file.`);
+      } else {
+        throw new Error(`Server error (${status}): ${serverError}`);
+      }
     } else if (error.request) {
-      // No response received
-      throw new Error('Cannot connect to server. Please make sure:\n1. The backend server is running (npm run server)\n2. Server is on port 3001\n3. Check console for any server errors');
+      // No response received - connection issue
+      throw new Error('Cannot connect to server. Please make sure:\n\n1. The backend server is running (npm run server)\n2. Server is accessible on http://localhost:3001\n3. No firewall is blocking the connection\n4. Check the backend console for errors');
     } else if (error.code === 'ECONNABORTED') {
-      throw new Error('Request timeout. The text might be too long. Try with shorter content.');
+      // Timeout
+      throw new Error('Request timeout. The content might be too long or complex.\n\nTips:\n• Try with shorter text (500-2000 characters works best)\n• Check your internet connection\n• Ensure the backend server is running properly');
+    } else if (error.message.includes('Cannot connect')) {
+      // Re-throw connection errors
+      throw error;
     } else {
-      // Other error
-      throw new Error(error.message || 'Unknown error occurred');
+      // Other errors
+      throw new Error(error.message || 'An unexpected error occurred. Please try again.');
     }
   }
 };

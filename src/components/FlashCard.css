@@ -1,18 +1,27 @@
+/* ========================================
+   FLASHCARD CONTAINER
+   ======================================== */
+
 .flashcard {
   width: 100%;
-  max-width: 500px;
-  height: clamp(250px, 50vw, 320px);
-  perspective: 1000px;
+  max-width: 550px;
+  height: clamp(280px, 52vw, 360px);
+  perspective: 1200px;
   cursor: pointer;
-  margin: clamp(15px, 3vw, 20px) auto;
-  touch-action: manipulation; /* Better mobile interaction */
+  margin: clamp(20px, 3.5vw, 25px) auto;
+  touch-action: manipulation;
+  position: relative;
 }
+
+/* ========================================
+   FLASHCARD INNER - 3D FLIP EFFECT
+   ======================================== */
 
 .flashcard-inner {
   position: relative;
   width: 100%;
   height: 100%;
-  transition: transform 0.6s;
+  transition: transform 0.7s cubic-bezier(0.4, 0.0, 0.2, 1);
   transform-style: preserve-3d;
 }
 
@@ -20,221 +29,344 @@
   transform: rotateY(180deg);
 }
 
+/* ========================================
+   FLASHCARD FACES - Study Theme Colors
+   ======================================== */
+
 .flashcard-front,
 .flashcard-back {
   position: absolute;
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  border-radius: clamp(12px, 2vw, 15px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  border-radius: clamp(14px, 2.5vw, 18px);
+  box-shadow: 
+    0 10px 35px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: clamp(20px, 4vw, 30px);
+  padding: clamp(24px, 4.5vw, 35px);
   box-sizing: border-box;
-  transition: box-shadow 0.3s;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle texture overlay */
+.flashcard-front::before,
+.flashcard-back::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0) 0px,
+      rgba(255, 255, 255, 0.02) 1px,
+      rgba(255, 255, 255, 0) 2px
+    );
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 .flashcard:hover .flashcard-front,
 .flashcard:hover .flashcard-back {
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 
+    0 15px 50px rgba(0, 0, 0, 0.25),
+    0 5px 15px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
+/* Front Face - Question (Deep Focus Blue) */
 .flashcard-front {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(145deg, #4a7ba7 0%, #5a8fc4 50%, #6ea8d4 100%);
   color: white;
 }
 
+/* Back Face - Answer (Warm Knowledge Gold) */
 .flashcard-back {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  color: white;
+  background: linear-gradient(145deg, #f39c12 0%, #f7b731 50%, #feca57 100%);
+  color: #2c3e50;
   transform: rotateY(180deg);
 }
 
-/* Learned card styling */
+/* ========================================
+   LEARNED CARD STYLING - Success Green
+   ======================================== */
+
 .flashcard.learned .flashcard-front {
-  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  background: linear-gradient(145deg, #27ae60 0%, #2ecc71 50%, #58d68d 100%);
 }
 
 .flashcard.learned .flashcard-back {
-  background: linear-gradient(135deg, #38ef7d 0%, #11998e 100%);
+  background: linear-gradient(145deg, #2ecc71 0%, #58d68d 50%, #82e0aa 100%);
+  color: #0e3b20;
 }
 
+/* ========================================
+   CARD CONTENT
+   ======================================== */
+
 .flashcard h3 {
-  margin: 0 0 clamp(10px, 2vw, 15px) 0;
-  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  margin: 0 0 clamp(12px, 2.5vw, 18px) 0;
+  font-size: clamp(1.05rem, 2.5vw, 1.4rem);
   text-transform: uppercase;
-  letter-spacing: clamp(1px, 0.3vw, 2px);
-  font-weight: 600;
+  letter-spacing: clamp(1.5px, 0.4vw, 2.5px);
+  font-weight: 700;
   text-align: center;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+/* Decorative underline */
+.flashcard h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+.flashcard-back h3::after {
+  background: rgba(0, 0, 0, 0.15);
 }
 
 .flashcard p {
-  font-size: clamp(0.95rem, 2.2vw, 1.15rem);
-  line-height: 1.6;
+  font-size: clamp(1rem, 2.3vw, 1.2rem);
+  line-height: 1.7;
   text-align: center;
   flex-grow: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow-y: auto;
-  max-height: 70%;
+  max-height: 68%;
   width: 100%;
-  padding: 0 clamp(5px, 1vw, 10px);
+  padding: 0 clamp(8px, 1.5vw, 14px);
   word-wrap: break-word;
   hyphens: auto;
+  font-weight: 400;
 }
 
-/* Hide scrollbars inside flashcards (keep scrolling) */
-/* Show scrollbars inside flashcards (accessible, thin) */
-.flashcard p {
-  -ms-overflow-style: auto; /* IE and Edge: show scrollbar */
-}
+/* ========================================
+   NATURAL SCROLLBARS INSIDE FLASHCARDS
+   ======================================== */
 
+/* WebKit browsers (Chrome, Safari, Edge) */
 .flashcard p::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-.flashcard p::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.25); /* visible on colored cards */
-  border-radius: 8px;
+  width: 10px;
 }
 
 .flashcard p::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
 }
 
+.flashcard-front p::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.flashcard-front p::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+  background-clip: padding-box;
+}
+
+.flashcard-back p::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.flashcard-back p::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+  background-clip: padding-box;
+}
+
+/* Firefox scrollbar - wrapped in @supports for better compatibility */
+@supports (scrollbar-color: auto) {
+  .flashcard-front p {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.05);
+  }
+
+  .flashcard-back p {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* ========================================
+   FLIP HINT - Interactive Cue
+   ======================================== */
+
 .flip-hint {
-  font-size: clamp(0.75rem, 1.8vw, 0.9rem);
-  opacity: 0.8;
-  margin-top: clamp(10px, 2vw, 15px);
+  font-size: clamp(0.8rem, 1.9vw, 0.95rem);
+  opacity: 0.85;
+  margin-top: clamp(12px, 2.5vw, 16px);
   font-style: italic;
-  animation: pulse 2s ease-in-out infinite;
+  animation: pulse 2.5s ease-in-out infinite;
+  font-weight: 500;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.flashcard-back .flip-hint {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 @keyframes pulse {
-  0%,
-  100% {
-    opacity: 0.8;
+  0%, 100% {
+    opacity: 0.85;
+    transform: scale(1);
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.6;
+    transform: scale(0.98);
   }
 }
 
-/* Active/Touch feedback */
+/* ========================================
+   INTERACTION FEEDBACK
+   ======================================== */
+
 .flashcard:active .flashcard-inner {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 
 .flashcard.flipped:active .flashcard-inner {
-  transform: rotateY(180deg) scale(0.98);
+  transform: rotateY(180deg) scale(0.97);
 }
 
-/* Tablet Specific (768px - 1024px) */
+/* Keyboard focus */
+.flashcard:focus {
+  outline: none;
+}
+
+.flashcard:focus-visible {
+  outline: 3px solid #5a8fc4;
+  outline-offset: 4px;
+  border-radius: clamp(14px, 2.5vw, 18px);
+}
+
+/* ========================================
+   RESPONSIVE BREAKPOINTS
+   ======================================== */
+
+/* Tablet */
 @media (min-width: 768px) and (max-width: 1024px) {
   .flashcard {
-    max-width: 550px;
-    height: 300px;
+    max-width: 600px;
+    height: 320px;
   }
 }
 
-/* Mobile Specific (up to 768px) */
+/* Mobile */
 @media (max-width: 768px) {
   .flashcard {
-    height: clamp(240px, 55vw, 280px);
-    margin: 15px auto;
+    height: clamp(260px, 58vw, 300px);
+    margin: 18px auto;
   }
 
   .flashcard-front,
   .flashcard-back {
-    padding: 20px 15px;
+    padding: 22px 18px;
   }
 
   .flashcard p {
-    font-size: 1rem;
-    max-height: 65%;
+    font-size: 1.05rem;
+    max-height: 64%;
   }
 
   .flip-hint {
-    font-size: 0.8rem;
-    margin-top: 10px;
+    font-size: 0.85rem;
+    margin-top: 12px;
+    padding: 5px 12px;
   }
 }
 
-/* Extra Small Mobile (up to 480px) */
+/* Extra Small Mobile */
 @media (max-width: 480px) {
   .flashcard {
-    height: 260px;
+    height: 280px;
     max-width: 100%;
   }
 
   .flashcard-front,
   .flashcard-back {
-    padding: 18px 12px;
-    border-radius: 12px;
+    padding: 20px 15px;
+    border-radius: 14px;
   }
 
   .flashcard h3 {
-    font-size: 1rem;
-    margin-bottom: 12px;
+    font-size: 1.05rem;
+    margin-bottom: 14px;
   }
 
   .flashcard p {
-    font-size: 0.95rem;
-    line-height: 1.5;
+    font-size: 1rem;
+    line-height: 1.6;
   }
 
   .flip-hint {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
   }
 }
 
 /* Landscape Mobile */
 @media (max-height: 500px) and (orientation: landscape) {
   .flashcard {
-    height: 180px;
+    height: 200px;
   }
 
   .flashcard-front,
   .flashcard-back {
-    padding: 15px 20px;
+    padding: 18px 22px;
   }
 
   .flashcard h3 {
-    font-size: 0.9rem;
-    margin-bottom: 8px;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
   }
 
   .flashcard p {
-    font-size: 0.85rem;
-    max-height: 60%;
+    font-size: 0.9rem;
+    max-height: 58%;
   }
 
   .flip-hint {
-    font-size: 0.7rem;
-    margin-top: 8px;
+    font-size: 0.75rem;
+    margin-top: 10px;
+    padding: 4px 10px;
   }
 }
 
-/* Large Screens (1400px+) */
+/* Large Screens */
 @media (min-width: 1400px) {
   .flashcard {
-    max-width: 600px;
-    height: 350px;
+    max-width: 650px;
+    height: 400px;
   }
 }
 
-/* High DPI / Retina displays */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .flashcard-front,
-  .flashcard-back {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  }
-}
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
 
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
@@ -244,7 +376,7 @@
 
   .flip-hint {
     animation: none;
-    opacity: 0.8;
+    opacity: 0.85;
   }
 
   .flashcard:active .flashcard-inner {
@@ -252,10 +384,25 @@
   }
 }
 
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .flashcard-front,
+  .flashcard-back {
+    border: 2px solid currentColor;
+  }
+
+  .flashcard h3::after {
+    background: currentColor;
+  }
+}
+
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
   .flashcard-front,
   .flashcard-back {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 
+      0 10px 35px rgba(0, 0, 0, 0.5),
+      0 2px 8px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
   }
 }
