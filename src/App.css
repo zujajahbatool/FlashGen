@@ -1,0 +1,623 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  min-height: 100vh;
+  height: 100vh;
+  overflow-x: hidden;
+  color: #333;
+}
+
+/* ---------------------------
+   Hide scrollbars visually (keep scrolling behavior)
+   --------------------------- */
+
+/* WebKit (Chrome, Edge, Safari) */
+body::-webkit-scrollbar,
+.app::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Firefox */
+html, body, .app {
+  overflow: hidden;
+  scrollbar-width: none; /* Firefox - progressive enhancement */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* API banner styles */
+.api-banner {
+  max-width: 800px;
+  margin: 0 auto clamp(12px, 3vw, 16px);
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.api-banner.error {
+  background: #ffecec;
+  color: #a80000;
+  border: 1px solid #f5c6c6;
+}
+
+.api-banner.success {
+  background: #e9fff0;
+  color: #0a6b1b;
+  border: 1px solid #c6f5d1;
+}
+
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(15px, 3vw, 20px);
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+/* Header - Fully Responsive */
+header {
+  text-align: center;
+  color: white;
+  margin-bottom: clamp(20px, 4vw, 30px);
+  padding: 0 10px;
+}
+
+header h1 {
+  font-size: clamp(1.8rem, 6vw, 3.5rem);
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  word-break: break-word;
+}
+
+header p {
+  font-size: clamp(0.85rem, 2.5vw, 1.2rem);
+  opacity: 0.9;
+}
+
+/* Input Section - Fully Responsive */
+.input-section {
+  background: white;
+  padding: clamp(20px, 5vw, 40px);
+  border-radius: clamp(10px, 2vw, 15px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+textarea {
+  width: 100%;
+  padding: clamp(12px, 2vw, 15px);
+  border: 2px solid #ddd;
+  border-radius: clamp(8px, 1.5vw, 10px);
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  font-family: inherit;
+  resize: vertical;
+  margin-bottom: 20px;
+  min-height: clamp(150px, 30vh, 200px);
+  max-height: 400px;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* File Upload - Fully Responsive */
+.file-upload {
+  text-align: center;
+  margin: clamp(15px, 3vw, 20px) 0;
+}
+
+.file-label {
+  display: inline-block;
+  padding: clamp(10px, 2vw, 12px) clamp(20px, 4vw, 24px);
+  background: #f0f0f0;
+  border-radius: clamp(6px, 1vw, 8px);
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  border: 2px dashed #ccc;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+.file-label:hover {
+  background: #e0e0e0;
+  border-color: #667eea;
+  transform: translateY(-2px);
+}
+
+.file-label:active {
+  transform: translateY(0);
+}
+
+/* File name display */
+.file-name {
+  margin-top: 10px;
+  font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+  color: #666;
+  font-style: italic;
+  word-break: break-word;
+}
+
+/* Generate Button - Fully Responsive */
+.generate-btn {
+  width: 100%;
+  padding: clamp(15px, 3vw, 20px);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: clamp(8px, 1.5vw, 10px);
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.generate-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.generate-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.generate-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 0.8s linear infinite;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Flashcard Section - Fully Responsive */
+.flashcard-section {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 10px;
+}
+
+/* Controls - Fully Responsive */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: clamp(8px, 2vw, 10px);
+  margin: clamp(20px, 4vw, 30px) 0;
+  flex-wrap: wrap;
+  padding: 0 10px;
+}
+
+.controls button {
+  padding: clamp(10px, 2vw, 12px) clamp(16px, 3vw, 20px);
+  border: none;
+  border-radius: clamp(6px, 1vw, 8px);
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  cursor: pointer;
+  transition: all 0.3s;
+  background: white;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  flex: 1 1 auto;
+  min-width: clamp(100px, 25vw, 120px);
+  max-width: 200px;
+  font-weight: 500;
+}
+
+.controls button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.controls button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.controls button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.learned-btn {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
+  color: white !important;
+}
+
+.learned-btn:hover:not(:disabled) {
+  box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4) !important;
+}
+
+/* Card Indicator - Fully Responsive */
+.card-indicator {
+  color: white;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  margin: clamp(15px, 3vw, 20px) 0;
+  font-weight: 500;
+}
+
+/* Action Buttons - Fully Responsive */
+.reset-btn,
+.download-btn {
+  margin-top: clamp(10px, 2vw, 15px);
+  padding: clamp(10px, 2vw, 12px) clamp(24px, 4vw, 30px);
+  border: none;
+  border-radius: clamp(6px, 1vw, 8px);
+  cursor: pointer;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  transition: all 0.3s;
+  display: inline-block;
+  margin-left: clamp(5px, 1vw, 10px);
+  margin-right: clamp(5px, 1vw, 10px);
+  font-weight: 500;
+  min-width: clamp(120px, 30vw, 150px);
+}
+
+.reset-btn {
+  background: #ff6b6b;
+  color: white;
+  box-shadow: 0 2px 5px rgba(255, 107, 107, 0.3);
+}
+
+.reset-btn:hover {
+  background: #ff5252;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255, 107, 107, 0.4);
+}
+
+.download-btn {
+  background: #4CAF50;
+  color: white;
+  box-shadow: 0 2px 5px rgba(76, 175, 80, 0.3);
+}
+
+.download-btn:hover {
+  background: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.4);
+}
+
+/* Error Message */
+.error-message {
+  background: #fee;
+  border: 1px solid #fcc;
+  color: #c33;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+  font-size: clamp(0.85rem, 2vw, 0.95rem);
+}
+
+/* Success Message */
+.success-message {
+  background: #efe;
+  border: 1px solid #cfc;
+  color: #3c3;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+  font-size: clamp(0.85rem, 2vw, 0.95rem);
+}
+
+/* Tablet Specific (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .controls {
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .controls button {
+    flex: 1 1 calc(33.333% - 10px);
+    max-width: none;
+  }
+}
+
+/* Mobile Specific (up to 768px) */
+@media (max-width: 768px) {
+  .app {
+    padding: 10px;
+  }
+
+  header {
+    margin-bottom: 20px;
+  }
+
+  .input-section {
+    padding: 20px 15px;
+  }
+
+  .controls {
+    flex-direction: column;
+    gap: 10px;
+    padding: 0;
+  }
+
+  .controls button {
+    width: 100%;
+    max-width: none;
+    min-width: auto;
+  }
+
+  .reset-btn,
+  .download-btn {
+    display: block;
+    width: calc(100% - 20px);
+    max-width: none;
+    margin: 10px auto;
+  }
+
+  textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+/* Extra Small Mobile (up to 480px) */
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 1.8rem;
+  }
+
+  header p {
+    font-size: 0.85rem;
+  }
+
+  .input-section {
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  .file-label {
+    padding: 10px 15px;
+    font-size: 0.85rem;
+  }
+
+  .generate-btn {
+    font-size: 1rem;
+    padding: 14px;
+  }
+
+  .controls button {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Large Screens (1400px+) */
+@media (min-width: 1400px) {
+  .app {
+    max-width: 1400px;
+  }
+
+  .input-section {
+    max-width: 900px;
+  }
+
+  .flashcard-section {
+    max-width: 700px;
+  }
+}
+
+/* Google Nest Hub (1024x600) */
+@media (min-width: 1024px) and (max-height: 600px) {
+  body {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .app {
+    height: 100vh;
+    overflow-y: auto;
+    padding: 10px;
+  }
+
+  header {
+    margin-bottom: 10px;
+  }
+
+  header h1 {
+    font-size: 2rem;
+    margin-bottom: 5px;
+  }
+
+  header p {
+    font-size: 0.9rem;
+  }
+
+  .input-section {
+    padding: 15px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+
+  textarea {
+    min-height: 120px;
+    max-height: 200px;
+  }
+
+  .flashcard {
+    height: 220px;
+    margin: 10px auto;
+  }
+
+  .controls {
+    margin: 15px 0;
+    gap: 8px;
+  }
+
+  .controls button {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+
+  .card-indicator {
+    margin: 10px 0;
+    font-size: 0.9rem;
+  }
+
+  .progress-counter {
+    padding: 12px;
+    margin: 15px auto;
+  }
+
+  .counter-display {
+    font-size: 2rem;
+  }
+
+  .reset-btn,
+  .download-btn {
+    padding: 8px 20px;
+    margin-top: 8px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Google Nest Hub Max (1280x800) */
+@media (min-width: 1280px) and (max-height: 800px) {
+  .app {
+    padding: 15px;
+  }
+
+  header h1 {
+    font-size: 2.5rem;
+  }
+
+  .input-section {
+    padding: 20px;
+  }
+
+  textarea {
+    min-height: 150px;
+    max-height: 250px;
+  }
+
+  .flashcard {
+    height: 260px;
+  }
+}
+
+/* Landscape Tablet and Smart Displays */
+@media (orientation: landscape) and (max-height: 800px) {
+  body {
+    height: 100vh;
+  }
+
+  .app {
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+
+  .input-section {
+    max-height: calc(100vh - 120px);
+  }
+
+  .flashcard-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-height: calc(100vh - 80px);
+  }
+}
+
+/* Landscape Mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+  }
+
+  header p {
+    font-size: 0.8rem;
+  }
+
+  .input-section {
+    padding: 15px;
+  }
+
+  textarea {
+    min-height: 120px;
+  }
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background: white;
+  }
+
+  .generate-btn,
+  .controls,
+  .reset-btn,
+  .download-btn,
+  .file-upload {
+    display: none;
+  }
+
+  .input-section,
+  .flashcard-section {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+}
+
+/* --- Make scrollbars visible where needed --- */
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0; /* keep page scrollbar hidden when .app handles scrolling */
+}
+
+/* show thin scrollbars for app and other overflow areas */
+.app::-webkit-scrollbar,
+.input-section::-webkit-scrollbar,
+.flashcard p::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.app::-webkit-scrollbar-track,
+.input-section::-webkit-scrollbar-track,
+.flashcard p::-webkit-scrollbar-track {
+  background: transparent;
+}
+.app::-webkit-scrollbar-thumb,
+.input-section::-webkit-scrollbar-thumb,
+.flashcard p::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.25);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+/* Firefox / Edge */
+.app, .input-section, .flashcard p {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.35) transparent;
+  -ms-overflow-style: auto;
+}

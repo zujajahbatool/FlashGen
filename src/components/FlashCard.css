@@ -1,0 +1,261 @@
+.flashcard {
+  width: 100%;
+  max-width: 500px;
+  height: clamp(250px, 50vw, 320px);
+  perspective: 1000px;
+  cursor: pointer;
+  margin: clamp(15px, 3vw, 20px) auto;
+  touch-action: manipulation; /* Better mobile interaction */
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flashcard.flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-front,
+.flashcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: clamp(12px, 2vw, 15px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(20px, 4vw, 30px);
+  box-sizing: border-box;
+  transition: box-shadow 0.3s;
+}
+
+.flashcard:hover .flashcard-front,
+.flashcard:hover .flashcard-back {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.flashcard-front {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.flashcard-back {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  transform: rotateY(180deg);
+}
+
+/* Learned card styling */
+.flashcard.learned .flashcard-front {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.flashcard.learned .flashcard-back {
+  background: linear-gradient(135deg, #38ef7d 0%, #11998e 100%);
+}
+
+.flashcard h3 {
+  margin: 0 0 clamp(10px, 2vw, 15px) 0;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  text-transform: uppercase;
+  letter-spacing: clamp(1px, 0.3vw, 2px);
+  font-weight: 600;
+  text-align: center;
+}
+
+.flashcard p {
+  font-size: clamp(0.95rem, 2.2vw, 1.15rem);
+  line-height: 1.6;
+  text-align: center;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  max-height: 70%;
+  width: 100%;
+  padding: 0 clamp(5px, 1vw, 10px);
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Hide scrollbars inside flashcards (keep scrolling) */
+/* Show scrollbars inside flashcards (accessible, thin) */
+.flashcard p {
+  -ms-overflow-style: auto; /* IE and Edge: show scrollbar */
+}
+
+.flashcard p::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.flashcard p::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.25); /* visible on colored cards */
+  border-radius: 8px;
+}
+
+.flashcard p::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.flip-hint {
+  font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+  opacity: 0.8;
+  margin-top: clamp(10px, 2vw, 15px);
+  font-style: italic;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Active/Touch feedback */
+.flashcard:active .flashcard-inner {
+  transform: scale(0.98);
+}
+
+.flashcard.flipped:active .flashcard-inner {
+  transform: rotateY(180deg) scale(0.98);
+}
+
+/* Tablet Specific (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .flashcard {
+    max-width: 550px;
+    height: 300px;
+  }
+}
+
+/* Mobile Specific (up to 768px) */
+@media (max-width: 768px) {
+  .flashcard {
+    height: clamp(240px, 55vw, 280px);
+    margin: 15px auto;
+  }
+
+  .flashcard-front,
+  .flashcard-back {
+    padding: 20px 15px;
+  }
+
+  .flashcard p {
+    font-size: 1rem;
+    max-height: 65%;
+  }
+
+  .flip-hint {
+    font-size: 0.8rem;
+    margin-top: 10px;
+  }
+}
+
+/* Extra Small Mobile (up to 480px) */
+@media (max-width: 480px) {
+  .flashcard {
+    height: 260px;
+    max-width: 100%;
+  }
+
+  .flashcard-front,
+  .flashcard-back {
+    padding: 18px 12px;
+    border-radius: 12px;
+  }
+
+  .flashcard h3 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+  }
+
+  .flashcard p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .flip-hint {
+    font-size: 0.75rem;
+  }
+}
+
+/* Landscape Mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .flashcard {
+    height: 180px;
+  }
+
+  .flashcard-front,
+  .flashcard-back {
+    padding: 15px 20px;
+  }
+
+  .flashcard h3 {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+  }
+
+  .flashcard p {
+    font-size: 0.85rem;
+    max-height: 60%;
+  }
+
+  .flip-hint {
+    font-size: 0.7rem;
+    margin-top: 8px;
+  }
+}
+
+/* Large Screens (1400px+) */
+@media (min-width: 1400px) {
+  .flashcard {
+    max-width: 600px;
+    height: 350px;
+  }
+}
+
+/* High DPI / Retina displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .flashcard-front,
+  .flashcard-back {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .flashcard-inner {
+    transition: none;
+  }
+
+  .flip-hint {
+    animation: none;
+    opacity: 0.8;
+  }
+
+  .flashcard:active .flashcard-inner {
+    transform: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .flashcard-front,
+  .flashcard-back {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  }
+}

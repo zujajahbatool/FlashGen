@@ -1,0 +1,203 @@
+.progress-counter {
+  text-align: center;
+  margin: clamp(20px, 4vw, 30px) auto;
+  padding: clamp(15px, 3vw, 20px);
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-radius: clamp(8px, 1.5vw, 10px);
+  display: inline-block;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  border: 2px solid #00ff00;
+  min-width: clamp(200px, 50vw, 280px);
+}
+
+.counter-label {
+  color: #ff6b6b;
+  font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+  text-transform: uppercase;
+  letter-spacing: clamp(2px, 0.5vw, 3px);
+  margin-bottom: clamp(8px, 1.5vw, 10px);
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+}
+
+.counter-display {
+  font-family: 'Courier New', monospace;
+  font-size: clamp(2rem, 8vw, 3rem);
+  color: #00ff00;
+  text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+  letter-spacing: clamp(3px, 1vw, 5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(5px, 1.5vw, 10px);
+  flex-wrap: wrap;
+}
+
+.digit-display {
+  background: #000;
+  padding: clamp(8px, 2vw, 10px) clamp(12px, 3vw, 20px);
+  border-radius: clamp(4px, 0.8vw, 5px);
+  border: 2px solid #00ff00;
+  display: inline-block;
+  min-width: clamp(40px, 10vw, 60px);
+  box-shadow: 
+    inset 0 0 10px rgba(0, 255, 0, 0.2),
+    0 0 20px rgba(0, 255, 0, 0.3);
+  animation: glow 2s ease-in-out infinite;
+}
+
+.separator {
+  margin: 0 clamp(5px, 1vw, 10px);
+  color: #00ff00;
+  font-weight: bold;
+  text-shadow: 0 0 10px #00ff00;
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 
+      inset 0 0 10px rgba(0, 255, 0, 0.2),
+      0 0 20px rgba(0, 255, 0, 0.3);
+  }
+  50% {
+    box-shadow: 
+      inset 0 0 15px rgba(0, 255, 0, 0.3),
+      0 0 30px rgba(0, 255, 0, 0.5);
+  }
+}
+
+/* Progress percentage indicator */
+.progress-percentage {
+  margin-top: clamp(8px, 1.5vw, 12px);
+  font-size: clamp(0.7rem, 1.6vw, 0.85rem);
+  color: #38ef7d;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-shadow: 0 0 5px rgba(56, 239, 125, 0.5);
+}
+
+/* Tablet Specific (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .progress-counter {
+    min-width: 260px;
+  }
+
+  .counter-display {
+    font-size: 2.5rem;
+  }
+}
+
+/* Mobile Specific (up to 768px) */
+@media (max-width: 768px) {
+  .progress-counter {
+    min-width: auto;
+    width: 90%;
+    max-width: 300px;
+    padding: 15px;
+  }
+
+  .counter-display {
+    font-size: clamp(1.8rem, 10vw, 2.5rem);
+    gap: 8px;
+  }
+
+  .digit-display {
+    min-width: 45px;
+    padding: 8px 12px;
+  }
+
+  .separator {
+    margin: 0 5px;
+  }
+}
+
+/* Extra Small Mobile (up to 480px) */
+@media (max-width: 480px) {
+  .progress-counter {
+    padding: 12px;
+    min-width: auto;
+    width: 85%;
+  }
+
+  .counter-label {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .counter-display {
+    font-size: 2rem;
+    gap: 6px;
+  }
+
+  .digit-display {
+    min-width: 40px;
+    padding: 6px 10px;
+    font-size: 1.8rem;
+  }
+
+  .separator {
+    margin: 0 4px;
+  }
+
+  .progress-percentage {
+    font-size: 0.7rem;
+    margin-top: 8px;
+  }
+}
+
+/* Landscape Mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .progress-counter {
+    padding: 10px;
+    margin: 15px auto;
+  }
+
+  .counter-label {
+    font-size: 0.7rem;
+    margin-bottom: 6px;
+  }
+
+  .counter-display {
+    font-size: 1.8rem;
+  }
+
+  .digit-display {
+    padding: 6px 12px;
+  }
+}
+
+/* Large Screens (1400px+) */
+@media (min-width: 1400px) {
+  .progress-counter {
+    min-width: 320px;
+    padding: 25px;
+  }
+
+  .counter-display {
+    font-size: 3.5rem;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .digit-display {
+    animation: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .progress-counter {
+    border: 3px solid #00ff00;
+  }
+
+  .counter-label,
+  .counter-display {
+    text-shadow: none;
+  }
+
+  .digit-display {
+    border-width: 3px;
+  }
+}
