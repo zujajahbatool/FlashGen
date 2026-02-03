@@ -6,7 +6,8 @@
   width: 100%;
   max-width: 550px;
   height: clamp(280px, 52vw, 360px);
-  perspective: 1200px;
+  /* CORRECT: perspective on the parent container */
+  perspective: 1000px;
   cursor: pointer;
   margin: clamp(20px, 3.5vw, 25px) auto;
   touch-action: manipulation;
@@ -23,6 +24,7 @@
   height: 100%;
   transition: transform 0.7s cubic-bezier(0.4, 0.0, 0.2, 1);
   transform-style: preserve-3d;
+  /* NO perspective here - this was causing the issue! */
 }
 
 .flashcard.flipped .flashcard-inner {
@@ -38,6 +40,7 @@
   position: absolute;
   width: 100%;
   height: 100%;
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   border-radius: clamp(14px, 2.5vw, 18px);
   box-shadow: 
@@ -52,7 +55,6 @@
   box-sizing: border-box;
   transition: all 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  position: relative;
   overflow: hidden;
 }
 
@@ -88,6 +90,7 @@
 .flashcard-front {
   background: linear-gradient(145deg, #4a7ba7 0%, #5a8fc4 50%, #6ea8d4 100%);
   color: white;
+  z-index: 2;
 }
 
 /* Back Face - Answer (Warm Knowledge Gold) */
@@ -95,6 +98,7 @@
   background: linear-gradient(145deg, #f39c12 0%, #f7b731 50%, #feca57 100%);
   color: #2c3e50;
   transform: rotateY(180deg);
+  z-index: 1;
 }
 
 /* ========================================
@@ -245,12 +249,12 @@
    INTERACTION FEEDBACK
    ======================================== */
 
-.flashcard:active .flashcard-inner {
-  transform: scale(0.97);
-}
+/* Removed any transform on active state to prevent jumping */
+/* .flashcard:active .flashcard-inner {} */
 
 .flashcard.flipped:active .flashcard-inner {
-  transform: rotateY(180deg) scale(0.97);
+  /* Only maintain the flip, no scale */
+  transform: rotateY(180deg);
 }
 
 /* Keyboard focus */
