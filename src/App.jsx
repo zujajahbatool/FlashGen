@@ -26,7 +26,7 @@ function App() {
     let cancelled = false;
     const checkKey = async () => {
       try {
-        const resp = await axios.get('http://localhost:3001/api/validate-key', { timeout: 7000 });
+        const resp = await axios.get('/api/validate-key', { timeout: 7000 });
         if (cancelled) return;
         if (resp.data && resp.data.valid === true) {
           setApiKeyValid(true);

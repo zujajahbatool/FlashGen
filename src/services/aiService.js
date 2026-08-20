@@ -6,18 +6,18 @@ export const generateFlashcards = async (text) => {
 
     // Validate API key first
     try {
-      const keyCheck = await axios.get('http://localhost:3001/api/validate-key', { timeout: 5000 });
+      const keyCheck = await axios.get('/api/validate-key', { timeout: 5000 });
       if (keyCheck.data && keyCheck.data.valid === false) {
         throw new Error(keyCheck.data.message || 'Invalid API key or API not enabled. Please check your Gemini API key.');
       }
     } catch (err) {
       if (err.code === 'ECONNABORTED' || err.code === 'ERR_NETWORK') {
-        throw new Error('Cannot connect to server. Please ensure:\n1. Backend server is running (npm run server)\n2. Server is accessible on port 3001');
+        throw new Error('Cannot connect to server. Please check that the backend is running and try again.');
       }
       console.warn('API key validation check:', err.message);
     }
 
-    const response = await axios.post('http://localhost:3001/api/generate-flashcards', {
+    const response = await axios.post('/api/generate-flashcards', {
       text: text.trim()
     }, {
       timeout: 90000, // 90 second timeout for longer texts
@@ -66,7 +66,7 @@ export const generateFlashcards = async (text) => {
       }
     } else if (error.request) {
       // No response received - connection issue
-      throw new Error('Cannot connect to server. Please make sure:\n\n1. The backend server is running (npm run server)\n2. Server is accessible on http://localhost:3001\n3. No firewall is blocking the connection\n4. Check the backend console for errors');
+      throw new Error('Cannot connect to server. Please check that the backend is running and try again.');
     } else if (error.code === 'ECONNABORTED') {
       // Timeout
       throw new Error('Request timeout. The content might be too long or complex.\n\nTips:\n• Try with shorter text (500-2000 characters works best)\n• Check your internet connection\n• Ensure the backend server is running properly');
