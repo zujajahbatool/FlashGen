@@ -93,6 +93,16 @@ A modern, beautifully designed web application that transforms your study materi
    
    Open your browser to: `http://localhost:5173`
 
+## Deploying to Vercel
+
+This project includes Vercel Functions under `api/`, so the frontend and Gemini backend can be deployed together.
+
+1. Import the repository into Vercel. Vercel will detect Vite automatically.
+2. Add `GEMINI_API_KEY` under **Project Settings > Environment Variables** for the Production environment.
+3. Deploy. The app uses same-origin `/api` routes in production; no localhost URL or separate backend deployment is required.
+
+For local development, keep using `npm run server` in one terminal and `npm run dev` in another. Vite proxies `/api` requests to the local Express server.
+
 ## 📖 Usage
 
 ### Method 1: Paste Text
